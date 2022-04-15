@@ -19,6 +19,12 @@ public class MainDemoApp {
         // call the AccountDAO business method
         theAccountDAO.addAccount();
 
+        theAccountDAO.setName("Nitesh");
+        theAccountDAO.setServiceCode("SDE");
+
+        System.out.println(theAccountDAO.getName());
+        System.out.println(theAccountDAO.getServiceCode());
+
         // call the MembershipDAO business method
         theMembershipDAO.addAccount();
 
