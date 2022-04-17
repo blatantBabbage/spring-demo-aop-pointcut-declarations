@@ -33,7 +33,7 @@ public class AccountDAO {
         System.out.println(getClass() + ": Doing my DB work - adding an account");
     }
 
-    public void addAccount(Account account) {
+    public void addAccount(Account account, boolean addOrNot) {
         System.out.println(getClass() + ": adding an Account");
     }
 }

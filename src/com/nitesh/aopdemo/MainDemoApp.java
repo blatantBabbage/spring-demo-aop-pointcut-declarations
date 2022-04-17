@@ -28,9 +28,12 @@ public class MainDemoApp {
         // call the MembershipDAO business method
         theMembershipDAO.addAccount();
 
+        // setting some value for account to display in joinpoint implementation in logging advice
         Account account = new Account();
+        account.setName("Nitesh Singh");
+        account.setLevel("SDE III");
 
-        theAccountDAO.addAccount(account);
+        theAccountDAO.addAccount(account, true);
 
         // close the context
         context.close();

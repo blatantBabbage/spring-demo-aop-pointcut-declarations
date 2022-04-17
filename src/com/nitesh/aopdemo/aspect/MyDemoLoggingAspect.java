@@ -1,38 +1,45 @@
 package com.nitesh.aopdemo.aspect;
 
+import com.nitesh.aopdemo.Account;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
+@Order(10)
 public class MyDemoLoggingAspect {
 
-
-    // Pointcut declaration to enable aspect to be executed before add* method inside com.nitesh.aopdemo.dao package
-    @Pointcut("execution(* com.nitesh.aopdemo.dao.*.*(..))")
-    private void forDaoPackage() {}
-
-    @Pointcut("execution(* com.nitesh.aopdemo.dao.*.get*(..))")
-    private void getter() {}
-
-    @Pointcut("execution(* com.nitesh.aopdemo.dao.*.set*(..))")
-    private void setter() {}
-
-    // combining pointcuts
-    @Pointcut("forDaoPackage() && !(getter() && setter())")
-    private void forDaoPackageExcludingGetterSetter() {}
-
     // Advice
-    @Before("forDaoPackageExcludingGetterSetter()")
-    public void beforeAddAccountAdvice() {
+    @Before("com.nitesh.aopdemo.aspect.MyPointcutExps.forDaoPackageExcludingGetterSetter()")
+    public void beforeAddAccountAdvice(JoinPoint joinPoint) {
         System.out.println("\n======>>>> Executing @Before advice on method()");
-    }
 
-    // reusing pointcut declaration on another Advice
-    @Before("forDaoPackageExcludingGetterSetter()")
-    public void performApiAnalytics() {
-        System.out.println("\n======>>>> Performing api analytics");
+        // get method signature
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        System.out.println("Method :" + methodSignature);
+
+        // get method args
+        Object[] methodArgs = joinPoint.getArgs();
+
+        // print args and its values
+        for(Object tempArgs : methodArgs){
+            System.out.println(tempArgs);
+
+            // printing arg value
+            if (tempArgs instanceof Account) {
+
+                // downcast and print Account specific stuff
+                // Account theAccount = (Account) tempArgs;
+
+
+                // downcasting tempArgs and print Account specific stuff
+                System.out.println("account_name : " + ((Account) tempArgs).getName());
+                System.out.println("account_name : " + ((Account) tempArgs).getLevel());
+            }
+        }
     }
 }
